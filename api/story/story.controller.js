@@ -1,5 +1,6 @@
 import { logger } from "../../services/logger.service.js";
 import { storyService } from "./story.service.js";
+import { userService } from "../user/user.service.js";
 
 export async function getStorys(req, res) {
   try {
@@ -26,7 +27,20 @@ export async function addStory(req, res) {
   const { loggedinUser, body: story } = req;
 
   try {
-    story.owner = loggedinUser;
+    // Fetch user details from the database
+    const user = await userService.getById(loggedinUser._id);
+    console.log("user controller", user);
+    if (!user) {
+      return res.status(404).send({ err: "User not found" });
+    }
+
+    // Assign the owner field with the required properties
+    story.owner = {
+      _id: user._id,
+      fullname: user.fullname,
+      imgUrl: user.imgUrl, // Ensure this field exists in the user data
+    };
+    console.log("story controller", story);
     const addedStory = await storyService.add(story);
     res.json(addedStory);
   } catch (err) {

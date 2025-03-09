@@ -76,7 +76,6 @@ async function update(user) {
     const userToSave = {
       _id: ObjectId.createFromHexString(user._id), // needed for the returnd obj
       username: user.username,
-      password: user.password,
       fullname: user.fullname,
       imgUrl: user.imgUrl,
       following: user.following,
