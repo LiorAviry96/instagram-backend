@@ -11,8 +11,9 @@ export async function login(req, res) {
 
     res.cookie("loginToken", loginToken, {
       sameSite: "None",
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
     });
+    console.log(user); // Make sure `user` is not empty or undefined
     res.json(user);
   } catch (err) {
     logger.error("Failed to Login " + err);

@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === "production") {
       "http://127.0.0.1:5173",
       "http://localhost:5173",
     ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   };
   app.use(cors(corsOptions));
@@ -42,7 +43,7 @@ app.use("/api/story", storyRoutes);
 setupSocketAPI(server);
 
 // Make every unhandled server-side-route match index.html
-// so when requesting http://localhost:3030/unhandled-route...
+// so when requesting http://localhost:/unhandled-route...
 // it will still serve the index.html file
 // and allow vue/react-router to take it from there
 
@@ -51,7 +52,7 @@ app.get("/**", (req, res) => {
 });
 
 import { logger } from "./services/logger.service.js";
-const port = process.env.PORT || 3030;
+const port = process.env.PORT || 4000;
 
 server.listen(port, () => {
   logger.info("Server is running on port: " + port);

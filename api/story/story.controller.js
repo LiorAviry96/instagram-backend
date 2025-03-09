@@ -37,12 +37,6 @@ export async function addStory(req, res) {
 
 export async function updateStory(req, res) {
   const { loggedinUser, body: story } = req;
-  const { _id: userId } = loggedinUser;
-
-  if (story.owner._id !== userId) {
-    res.status(403).send("Not your story...");
-    return;
-  }
 
   try {
     const updatedStory = await storyService.update(story);

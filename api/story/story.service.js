@@ -53,13 +53,12 @@ async function getById(storyId) {
 
 async function remove(storyId) {
   const { loggedinUser } = asyncLocalStorage.getStore();
-  console.log("loggedinUser", loggedinUser);
 
   try {
     const criteria = {
       _id: ObjectId.createFromHexString(storyId),
     };
-    console.log("criteria", criteria);
+
     const collection = await dbService.getCollection("storys");
     const res = await collection.deleteOne(criteria);
 
