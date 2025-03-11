@@ -102,22 +102,7 @@ async function update(story) {
   }
 }
 
-/*async function addCarMsg(carId, msg) {
-  try {
-    const criteria = { _id: ObjectId.createFromHexString(carId) };
-    msg.id = makeId();
-
-    const collection = await dbService.getCollection("car");
-    await collection.updateOne(criteria, { $push: { msgs: msg } });
-
-    return msg;
-  } catch (err) {
-    logger.error(`cannot add car msg ${carId}`, err);
-    throw err;
-  }
-}
-
-async function removeCarMsg(carId, msgId) {
+/*async function removeCarMsg(carId, msgId) {
   try {
     const criteria = { _id: ObjectId.createFromHexString(carId) };
 

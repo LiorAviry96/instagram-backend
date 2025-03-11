@@ -23,7 +23,6 @@ router.put("/:id", requireAuth, updateStory);
 router.delete("/:id", requireAuth, removeStory);
 // router.delete('/:id', requireAuth, requireAdmin, removeCar)
 
-//router.post("/:id/msg", requireAuth, addCarMsg);
 //router.delete("/:id/msg/:msgId", requireAuth, removeCarMsg);
 
 export const storyRoutes = router;

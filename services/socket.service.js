@@ -53,11 +53,12 @@ export function setupSocketAPI(http) {
   });
 }
 
+//message to a specific room
 function emitTo({ type, data, label }) {
   if (label) gIo.to("watching:" + label.toString()).emit(type, data);
   else gIo.emit(type, data);
 }
-
+//private messages
 async function emitToUser({ type, data, userId }) {
   userId = userId.toString();
   const socket = await _getUserSocket(userId);

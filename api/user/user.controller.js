@@ -48,3 +48,31 @@ export async function updateUser(req, res) {
     res.status(400).send({ err: "Failed to update user" });
   }
 }
+
+export async function addUserMsg(req, res) {
+  const { loggedinUser } = req;
+  const { id } = req.params; // Extracting userId from the request params
+
+  if (!loggedinUser) {
+    return res.status(401).json({ err: "User not authenticated" });
+  }
+
+  try {
+    const msg = {
+      by: {
+        _id: loggedinUser._id,
+        userName: loggedinUser.userName,
+        fullname: loggedinUser.fullname,
+        imgUrl: loggedinUser.imgUrl,
+      },
+      message: req.body.message, // Change from `txt` to `message`
+      timestamp: new Date(),
+    };
+
+    const savedMsg = await userService.addUserMsg(id, msg);
+    res.json(savedMsg);
+  } catch (err) {
+    logger.error("Failed to add user message", err);
+    res.status(500).send({ err: "Failed to add user message" });
+  }
+}

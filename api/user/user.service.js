@@ -9,6 +9,7 @@ export const userService = {
   remove, // Delete (remove user)
   query, // List (of users)
   getByUsername, // Used for Login
+  addUserMsg,
 };
 
 async function query(filterBy = { txt: "" }) {
@@ -110,6 +111,25 @@ async function add(user) {
     return userToAdd;
   } catch (err) {
     logger.error("cannot add user", err);
+    throw err;
+  }
+}
+
+async function addUserMsg(userId, msg) {
+  try {
+    const collection = await dbService.getCollection("msgs");
+
+    const newMsg = {
+      by: msg.by,
+      message: msg.message,
+      timestamp: msg.timestamp,
+    };
+
+    const result = await collection.insertOne(newMsg);
+
+    return { ...newMsg, _id: result.insertedId };
+  } catch (err) {
+    logger.error(`Cannot add message for user ${userId}`, err);
     throw err;
   }
 }
