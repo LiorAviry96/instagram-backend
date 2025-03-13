@@ -10,6 +10,7 @@ export const userService = {
   query,
   getByUsername,
   addUserMsg,
+  getChatMessages,
 };
 
 async function query(filterBy = { txt: "" }) {
@@ -114,7 +115,7 @@ async function add(user) {
   }
 }
 
-async function addUserMsg(userId, msg) {
+async function addUserMsg(user, msg) {
   try {
     const collection = await dbService.getCollection("msgs");
 
@@ -124,12 +125,41 @@ async function addUserMsg(userId, msg) {
       message: msg.message,
       timestamp: msg.timestamp,
     };
-
+    console.log("newMsg", newMsg);
     const result = await collection.insertOne(newMsg);
 
     return { ...newMsg, _id: result.insertedId };
   } catch (err) {
-    logger.error(`Cannot add message for user ${userId}`, err);
+    logger.error(`Cannot add message for user ${user._Id}`, err);
+    throw err;
+  }
+}
+
+async function getChatMessages(userId, targetUserId) {
+  try {
+    const collection = await dbService.getCollection("msgs");
+
+    // Fetch chat messages between the two users
+    const messages = await collection
+      .find({
+        $or: [
+          { "by._id": userId, "to._id": targetUserId },
+          { "by._id": targetUserId, "to._id": userId },
+        ],
+      })
+      .sort({ timestamp: 1 }) // Order messages chronologically
+      .toArray();
+    console.log("messages", messages);
+    if (!messages) {
+      return [];
+    }
+
+    return messages;
+  } catch (err) {
+    logger.error(
+      `Error fetching chat messages between ${userId} and ${targetUserId}`,
+      err
+    );
     throw err;
   }
 }

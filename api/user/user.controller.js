@@ -49,8 +49,7 @@ export async function updateUser(req, res) {
 
 export async function addUserMsg(req, res) {
   const { loggedinUser } = req;
-  console.log("loggedinUser:", req.loggedinUser); // Debugging
-  console.log("Request body:", req.body);
+
   const { id } = req.params;
 
   if (!loggedinUser) {
@@ -61,17 +60,14 @@ export async function addUserMsg(req, res) {
     const msg = {
       by: {
         _id: loggedinUser._id,
-        userName: loggedinUser.userName,
         fullname: loggedinUser.fullname,
-        imgUrl: loggedinUser.imgUrl,
       },
       to: {
         _id: req.body.targetUser._id,
-        userName: req.body.targetUser.userName,
         fullname: req.body.targetUser.fullname,
         imgUrl: req.body.targetUser.imgUrl,
       },
-      message: req.body.message,
+      message: req.body.txt,
       timestamp: new Date(),
     };
 
@@ -80,5 +76,27 @@ export async function addUserMsg(req, res) {
   } catch (err) {
     logger.error("Failed to add user message", err);
     res.status(500).send({ err: "Failed to add user message" });
+  }
+}
+
+export async function getUserChatMessages(req, res) {
+  const { loggedinUser } = req;
+  const { id, targetUserId } = req.params;
+  //console.log("req.params", req.params);
+  //console.log("req.body", req.body);
+
+  console.log("loggedinUser", loggedinUser);
+
+  console.log("targetUserId", targetUserId);
+
+  try {
+    const messages = await userService.getChatMessages(
+      loggedinUser._id,
+      targetUserId
+    );
+    res.json(messages);
+  } catch (err) {
+    logger.error("Error fetching chat messages:", err);
+    res.status(500).send("Failed to retrieve messages");
   }
 }
