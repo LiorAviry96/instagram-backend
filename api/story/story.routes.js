@@ -13,16 +13,10 @@ import {
 
 const router = express.Router();
 
-// We can add a middleware for the entire router:
-// router.use(requireAuth)
-
 router.get("/", log, getStorys);
 router.get("/:id", log, getStoryById);
 router.post("/", log, requireAuth, addStory);
 router.put("/:id", requireAuth, updateStory);
 router.delete("/:id", requireAuth, removeStory);
-// router.delete('/:id', requireAuth, requireAdmin, removeCar)
-
-//router.delete("/:id/msg/:msgId", requireAuth, removeCarMsg);
 
 export const storyRoutes = router;

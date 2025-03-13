@@ -36,11 +36,9 @@ export async function deleteUser(req, res) {
 
 export async function updateUser(req, res) {
   try {
-    console.log("PUT request received for user update:", req.body);
+    //console.log("PUT request received for user update:", req.body);
     const user = req.body;
-    console.log("user", user);
     const savedUser = await userService.update(user);
-    console.log("savedUser", savedUser);
 
     res.send(savedUser);
   } catch (err) {
@@ -51,7 +49,7 @@ export async function updateUser(req, res) {
 
 export async function addUserMsg(req, res) {
   const { loggedinUser } = req;
-  const { id } = req.params; // Extracting userId from the request params
+  const { id } = req.params;
 
   if (!loggedinUser) {
     return res.status(401).json({ err: "User not authenticated" });
@@ -65,7 +63,7 @@ export async function addUserMsg(req, res) {
         fullname: loggedinUser.fullname,
         imgUrl: loggedinUser.imgUrl,
       },
-      message: req.body.message, // Change from `txt` to `message`
+      message: req.body.message,
       timestamp: new Date(),
     };
 

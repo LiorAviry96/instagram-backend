@@ -3,12 +3,12 @@ import { logger } from "../../services/logger.service.js";
 import { ObjectId } from "mongodb";
 
 export const userService = {
-  add, // Create (Signup)
-  getById, // Read (Profile page)
-  update, // Update (Edit profile)
-  remove, // Delete (remove user)
-  query, // List (of users)
-  getByUsername, // Used for Login
+  add,
+  getById,
+  update,
+  remove,
+  query,
+  getByUsername,
   addUserMsg,
 };
 
@@ -20,8 +20,7 @@ async function query(filterBy = { txt: "" }) {
     users = users.map((user) => {
       delete user.password;
       user.createdAt = user._id.getTimestamp();
-      // Returning fake fresh data
-      // user.createdAt = Date.now() - (1000 * 60 * 60 * 24 * 3) // 3 days ago
+
       return user;
     });
     return users;
@@ -73,9 +72,8 @@ async function remove(userId) {
 
 async function update(user) {
   try {
-    // peek only updatable properties
     const userToSave = {
-      _id: ObjectId.createFromHexString(user._id), // needed for the returnd obj
+      _id: ObjectId.createFromHexString(user._id),
       username: user.username,
       fullname: user.fullname,
       imgUrl: user.imgUrl,
@@ -83,6 +81,7 @@ async function update(user) {
       followers: user.followers,
       images: user.images,
       savedStorys: user.savedStorys,
+      notifications: user.notifications,
     };
     const collection = await dbService.getCollection("users");
     await collection.updateOne({ _id: userToSave._id }, { $set: userToSave });
@@ -95,7 +94,6 @@ async function update(user) {
 
 async function add(user) {
   try {
-    // peek only updatable fields!
     const userToAdd = {
       username: user.username,
       password: user.password,
@@ -105,6 +103,7 @@ async function add(user) {
       followers: user.followers,
       images: user.images,
       savedStorys: user.savedStorys,
+      notifications: user.notifications,
     };
     const collection = await dbService.getCollection("users");
     await collection.insertOne(userToAdd);

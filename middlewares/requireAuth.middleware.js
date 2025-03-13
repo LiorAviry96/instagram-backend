@@ -15,7 +15,7 @@ export function requireAuth(req, res, next) {
   next();
 }
 //should delete
-export function requireAdmin(req, res, next) {
+/*export function requireAdmin(req, res, next) {
   const { loggedinUser } = asyncLocalStorage.getStore();
 
   if (!loggedinUser) return res.status(401).send("Not Authenticated");
@@ -25,4 +25,4 @@ export function requireAdmin(req, res, next) {
     return;
   }
   next();
-}
+}*/

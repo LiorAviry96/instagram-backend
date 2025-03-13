@@ -14,6 +14,17 @@ export function setupSocketAPI(http) {
     socket.on("disconnect", (socket) => {
       logger.info(`Socket disconnected [id: ${socket.id}]`);
     });
+    socket.on("user-emit-followed", (data) => {
+      console.log("Received user-followed event:", data);
+      logger.info(`User followed event: ${data.loggedInUser._id} followed you`);
+
+      emitToUser({
+        type: "user-event-followed",
+        data: data.loggedInUser,
+        userId: data.targetUserId,
+      });
+    });
+
     socket.on("chat-set-topic", (topic) => {
       if (socket.myTopic === topic) return;
       if (socket.myTopic) {
@@ -29,9 +40,7 @@ export function setupSocketAPI(http) {
       logger.info(
         `New chat msg from socket [id: ${socket.id}], emitting to topic ${socket.myTopic}`
       );
-      // emits to all sockets:
-      // gIo.emit('chat addMsg', msg)
-      // emits only to sockets in the same room
+
       gIo.to(socket.myTopic).emit("chat-add-msg", msg);
     });
     socket.on("user-watch", (userId) => {

@@ -14,7 +14,6 @@ import { setupAsyncLocalStorage } from "./middlewares/setupAls.middleware.js";
 const app = express();
 const server = http.createServer(app);
 
-// Express App Config
 app.use(cookieParser());
 app.use(express.json());
 
@@ -41,11 +40,6 @@ app.use("/api/user", userRoutes);
 app.use("/api/story", storyRoutes);
 
 setupSocketAPI(server);
-
-// Make every unhandled server-side-route match index.html
-// so when requesting http://localhost:/unhandled-route...
-// it will still serve the index.html file
-// and allow vue/react-router to take it from there
 
 app.get("/**", (req, res) => {
   res.sendFile(path.resolve("public/index.html"));

@@ -27,18 +27,16 @@ export async function addStory(req, res) {
   const { loggedinUser, body: story } = req;
 
   try {
-    // Fetch user details from the database
     const user = await userService.getById(loggedinUser._id);
     console.log("user controller", user);
     if (!user) {
       return res.status(404).send({ err: "User not found" });
     }
 
-    // Assign the owner field with the required properties
     story.owner = {
       _id: user._id,
       fullname: user.fullname,
-      imgUrl: user.imgUrl, // Ensure this field exists in the user data
+      imgUrl: user.imgUrl,
     };
     console.log("story controller", story);
     const addedStory = await storyService.add(story);
@@ -72,15 +70,3 @@ export async function removeStory(req, res) {
     res.status(400).send({ err: "Failed to remove story" });
   }
 }
-
-/*export async function removeCarMsg(req, res) {
-  try {
-    const { id: carId, msgId } = req.params;
-
-    const removedId = await carService.removeCarMsg(carId, msgId);
-    res.send(removedId);
-  } catch (err) {
-    logger.error("Failed to remove car msg", err);
-    res.status(400).send({ err: "Failed to remove car msg" });
-  }
-}*/
