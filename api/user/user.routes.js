@@ -16,6 +16,6 @@ router.get("/", getUsers);
 router.get("/:id", getUser);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
-router.post("/:id/msg", requireAuth, addUserMsg);
+router.post("/:id/inbox", requireAuth, addUserMsg);
 
 export const userRoutes = router;

@@ -120,6 +120,7 @@ async function addUserMsg(userId, msg) {
 
     const newMsg = {
       by: msg.by,
+      to: msg.to,
       message: msg.message,
       timestamp: msg.timestamp,
     };

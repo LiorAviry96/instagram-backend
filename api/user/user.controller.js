@@ -49,6 +49,8 @@ export async function updateUser(req, res) {
 
 export async function addUserMsg(req, res) {
   const { loggedinUser } = req;
+  console.log("loggedinUser:", req.loggedinUser); // Debugging
+  console.log("Request body:", req.body);
   const { id } = req.params;
 
   if (!loggedinUser) {
@@ -62,6 +64,12 @@ export async function addUserMsg(req, res) {
         userName: loggedinUser.userName,
         fullname: loggedinUser.fullname,
         imgUrl: loggedinUser.imgUrl,
+      },
+      to: {
+        _id: req.body.targetUser._id,
+        userName: req.body.targetUser.userName,
+        fullname: req.body.targetUser.fullname,
+        imgUrl: req.body.targetUser.imgUrl,
       },
       message: req.body.message,
       timestamp: new Date(),

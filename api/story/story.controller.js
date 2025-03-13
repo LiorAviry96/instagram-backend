@@ -28,7 +28,6 @@ export async function addStory(req, res) {
 
   try {
     const user = await userService.getById(loggedinUser._id);
-    console.log("user controller", user);
     if (!user) {
       return res.status(404).send({ err: "User not found" });
     }
@@ -38,7 +37,6 @@ export async function addStory(req, res) {
       fullname: user.fullname,
       imgUrl: user.imgUrl,
     };
-    console.log("story controller", story);
     const addedStory = await storyService.add(story);
     res.json(addedStory);
   } catch (err) {
