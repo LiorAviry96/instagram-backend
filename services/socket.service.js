@@ -23,8 +23,6 @@ export function setupSocketAPI(http) {
         data: data.loggedInUser,
         userId: data.targetUserId,
       });
-
-      //console.log("type", type);
     });
 
     socket.on("user-emit-liked", (data) => {
@@ -35,8 +33,18 @@ export function setupSocketAPI(http) {
         data: data.loggedInUser,
         userId: data.targetUserId,
       });
+    });
 
-      //console.log("type", type);
+    socket.on("user-emit-comment", (data) => {
+      console.log("Received user-emit-comment event:", data);
+      logger.info(
+        `User liked event: ${data.loggedInUser._id} comment on your photo`
+      );
+      emitToUser({
+        type: "user-event-comment",
+        data: data.loggedInUser,
+        userId: data.targetUserId,
+      });
     });
 
     socket.on("chat-set-topic", (topic) => {

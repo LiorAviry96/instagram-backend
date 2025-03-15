@@ -82,12 +82,6 @@ export async function addUserMsg(req, res) {
 export async function getUserChatMessages(req, res) {
   const { loggedinUser } = req;
   const { id, targetUserId } = req.params;
-  //console.log("req.params", req.params);
-  //console.log("req.body", req.body);
-
-  console.log("loggedinUser", loggedinUser);
-
-  console.log("targetUserId", targetUserId);
 
   try {
     const messages = await userService.getChatMessages(
@@ -103,9 +97,7 @@ export async function getUserChatMessages(req, res) {
 
 export async function getUserNotificationsHandler(req, res) {
   try {
-    console.log(req.params.id);
     const notifications = await userService.getUserNotifications(req.params.id);
-    console.log("notifications", notifications);
     res.json(notifications);
   } catch (err) {
     logger.error("Failed to fetch user notifications", err);

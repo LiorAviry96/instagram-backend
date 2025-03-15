@@ -126,7 +126,6 @@ async function addUserMsg(user, msg) {
       message: msg.message,
       timestamp: msg.timestamp,
     };
-    console.log("newMsg", newMsg);
     const result = await collection.insertOne(newMsg);
 
     return { ...newMsg, _id: result.insertedId };
@@ -150,7 +149,7 @@ async function getChatMessages(userId, targetUserId) {
       })
       .sort({ timestamp: 1 }) // Order messages chronologically
       .toArray();
-    console.log("messages", messages);
+
     if (!messages) {
       return [];
     }
