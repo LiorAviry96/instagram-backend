@@ -100,3 +100,15 @@ export async function getUserChatMessages(req, res) {
     res.status(500).send("Failed to retrieve messages");
   }
 }
+
+export async function getUserNotificationsHandler(req, res) {
+  try {
+    console.log(req.params.id);
+    const notifications = await userService.getUserNotifications(req.params.id);
+    console.log("notifications", notifications);
+    res.json(notifications);
+  } catch (err) {
+    logger.error("Failed to fetch user notifications", err);
+    res.status(500).send({ err: "Failed to fetch user notifications" });
+  }
+}

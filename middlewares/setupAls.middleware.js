@@ -10,11 +10,6 @@ export async function setupAsyncLocalStorage(req, res, next) {
 
     if (loggedinUser) {
       const alsStore = asyncLocalStorage.getStore();
-      console.log(
-        "AsyncLocalStorage after setup:",
-        asyncLocalStorage.getStore()
-      );
-
       alsStore.loggedinUser = loggedinUser;
     }
     next();

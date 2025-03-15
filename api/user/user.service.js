@@ -11,6 +11,7 @@ export const userService = {
   getByUsername,
   addUserMsg,
   getChatMessages,
+  getUserNotifications,
 };
 
 async function query(filterBy = { txt: "" }) {
@@ -160,6 +161,25 @@ async function getChatMessages(userId, targetUserId) {
       `Error fetching chat messages between ${userId} and ${targetUserId}`,
       err
     );
+    throw err;
+  }
+}
+
+async function getUserNotifications(userId) {
+  try {
+    const collection = await dbService.getCollection("users");
+    const user = await collection.findOne(
+      { _id: ObjectId.createFromHexString(userId) },
+      { projection: { notifications: 1 } } // Only retrieve notifications
+    );
+
+    if (!user || !user.notifications) {
+      return [];
+    }
+
+    return user.notifications;
+  } catch (err) {
+    logger.error(`Failed to get notifications for user ${userId}`, err);
     throw err;
   }
 }

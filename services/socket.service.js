@@ -14,15 +14,29 @@ export function setupSocketAPI(http) {
     socket.on("disconnect", (socket) => {
       logger.info(`Socket disconnected [id: ${socket.id}]`);
     });
+
     socket.on("user-emit-followed", (data) => {
       console.log("Received user-followed event:", data);
       logger.info(`User followed event: ${data.loggedInUser._id} followed you`);
-
       emitToUser({
         type: "user-event-followed",
         data: data.loggedInUser,
         userId: data.targetUserId,
       });
+
+      //console.log("type", type);
+    });
+
+    socket.on("user-emit-liked", (data) => {
+      console.log("Received user-emit-liked event:", data);
+      logger.info(`User liked event: ${data.loggedInUser._id} like your photo`);
+      emitToUser({
+        type: "user-event-liked",
+        data: data.loggedInUser,
+        userId: data.targetUserId,
+      });
+
+      //console.log("type", type);
     });
 
     socket.on("chat-set-topic", (topic) => {
