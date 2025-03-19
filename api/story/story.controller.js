@@ -61,6 +61,7 @@ export async function removeStory(req, res) {
   try {
     const storyId = req.params.id;
     const removedId = await storyService.remove(storyId);
+    console.log("Story deleted on server controller:", removedId);
 
     res.send(removedId);
   } catch (err) {

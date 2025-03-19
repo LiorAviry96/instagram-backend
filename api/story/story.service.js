@@ -58,6 +58,7 @@ async function remove(storyId) {
     const criteria = {
       _id: ObjectId.createFromHexString(storyId),
     };
+    console.log("Story deleted on server:", criteria);
 
     const collection = await dbService.getCollection("storys");
     const res = await collection.deleteOne(criteria);
